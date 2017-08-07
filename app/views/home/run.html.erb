@@ -1,0 +1,13 @@
+<%= form_tag url_for(controller: :home,action: :run) %>
+
+	<%= text_area_tag(:code) %>
+	<%= submit_tag("Run") %>
+
+
+<div>
+	<% File.readlines('tmp/result.txt').each do |line| %>
+	<%= line %><br>
+	<% end %>
+
+
+</div>
