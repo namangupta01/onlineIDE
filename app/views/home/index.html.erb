@@ -1,4 +1,13 @@
-<%= form_tag url_for(controller: :home,action: :run) %>
+<div class="dropdown">
+  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Choose Language
+  <span class="caret"></span></button>
+  <ul class="dropdown-menu">
+    <li><a id="ruby" href="#">Ruby</a></li>
+    <li><a id="c" href="#">C</a></li>
+  </ul>
+</div>
+<br>
+<%= form_tag url_for(controller: :home,action: :run_c), id: "form" %>
 
 	<%= text_area_tag(:code) %>
 	<%= submit_tag("Run") %>

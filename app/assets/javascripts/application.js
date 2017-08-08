@@ -14,3 +14,17 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require_tree .
+
+$(document).ready(function(){
+	rubyEle=document.getElementById("ruby");
+	rubyEle.addEventListener("click",function(e){
+		e.preventDefault();
+		console.log("here");
+		$('form').attr('action', '/run_ruby');
+	})
+	cEle=document.getElementById("c");
+	cEle.addEventListener("click",function(e){
+		e.preventDefault();
+		$('form').attr('action', '/run_c');
+	})
+});

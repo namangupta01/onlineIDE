@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
 
   get '/' => 'home#index'
-  post '/run' => 'home#run'
+  post '/run_c' => 'home#run_c'
+  post '/run_ruby' => 'home#run_ruby'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
