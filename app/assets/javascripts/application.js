@@ -14,17 +14,43 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require_tree .
+//= require ace-rails-ap
+
 
 $(document).ready(function(){
 	rubyEle=document.getElementById("ruby");
 	rubyEle.addEventListener("click",function(e){
 		e.preventDefault();
-		console.log("here");
-		$('form').attr('action', '/run_ruby');
+		/*console.log("here");
+		$('form').attr('action', '/run_ruby');*/
+		$('form').submit(function(){
+				$('<input />').attr('type', 'hidden')
+			          .attr('name', "lang")
+			          .attr('value', 'ruby')
+			          .appendTo('form');
+				}
+			)
+		editor.session.setOptions({
+    				mode: "ace/mode/ruby",
+    				tabSize: 4,
+    				useSoftTabs: true
+				});
 	})
 	cEle=document.getElementById("c");
 	cEle.addEventListener("click",function(e){
 		e.preventDefault();
-		$('form').attr('action', '/run_c');
+		/*$('form').attr('action', '/run_c');*/
+		$('form').submit(function(){
+				$('<input />').attr('type', 'hidden')
+			          .attr('name', "lang")
+			          .attr('value', 'c')
+			          .appendTo('form');
+				}
+			)
+		editor.session.setOptions({
+    				mode: "ace/mode/c_cpp",
+    				tabSize: 4,
+    				useSoftTabs: true
+		});
 	})
 });

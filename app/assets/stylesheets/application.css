@@ -13,3 +13,9 @@
  *= require_tree .
  *= require_self
  */
+
+
+ #editor {
+    width: 800px;
+    height: 600px;
+}
