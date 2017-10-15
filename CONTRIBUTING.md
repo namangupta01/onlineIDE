@@ -8,7 +8,7 @@ In particular, this community seeks the following types of contributions:
 
 * code: contribute your expertise in an area by helping us expand onlineIDE
 * ideas: participate in an issues thread or start your own to have your voice heard.
-* code editing: fix typos, clarify language, and generally improve the quality of the content of OSEM
+* code editing: fix typos, clarify language, and generally improve the quality of the content of onlineIDE
 
 ## Running onlineIDE in development
 We are using [Vagrant](https://www.vagrantup.com/) to create our development environments.
