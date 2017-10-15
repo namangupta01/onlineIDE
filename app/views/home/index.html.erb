@@ -7,14 +7,49 @@
 		    <li><a id="ruby" href="#">Ruby</a></li>
 		    <li><a id="c" href="#">C</a></li>
 		  </ul>
-		</div>
-		<br>
-		<%= form_tag url_for(controller: :home,action: :run_c), id: "form" %>
-
-			<%= text_area_tag(:code) %>
+		</div><br>
+			<%= form_tag url_for(controller: :home,action: :index), method: :get,id: "form"%>
+				<div id="editor"></div>
+				<script src="src/theme-twilight.js" type="text/javascript" charset="utf-8"></script>
+				<script src="src/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
+				<script>
+	    			var editor = ace.edit("editor");
+	    			editor.setTheme("ace/theme/twilight");
+	    			/*var JavaScriptMode = ace.require("ace/mode/javascript").Mode;
+					editor.session.setMode(new JavaScriptMode());*/
+					/*editor.setTheme("ace/theme/tomorrow");*/
+	    			/*editor.session.setMode("ace/mode/c");*/
+	    			editor.session.setOptions({
+	    				mode: "ace/mode/ruby",
+	    				tabSize: 4,
+	    				useSoftTabs: true
+					});
+	      			editor.setAutoScrollEditorIntoView(true);
+	      			editor.setOption("minLines", 25);
+	    			editor.setOption("maxLines", 100);
+				</script>
+				<br>	
 			<%= text_area_tag(:testcases) %>
 			<%= submit_tag("Run") %>
+
+			<script type="text/javascript">
+			$('form').submit(function(){
+				$('<input />').attr('type', 'hidden')
+			          .attr('name', "code")
+			          .attr('value', editor.getSession().getValue())
+			          .appendTo('form');
+				}
+			)
+			</script>
+
+			<div>	
+				<% if @a==1 %>
+					<% File.readlines('tmp/result.txt').each do |line| %>
+					<%= line %><br>
+					<% end %>
+				<% end %>
+			</div>
 		</div>
-	</div>
-</div>			
+</div>
+
 
