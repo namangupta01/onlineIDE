@@ -12,7 +12,11 @@ class HomeController < ApplicationController
       file = File.open('tmp/testcases.txt','w')
       file.syswrite(params[:testcases])
       file.close
-      system('ruby tmp/ruby.rb< tmp/testcases.txt > tmp/result.txt')
+          byebug
+      status = system('ruby tmp/ruby.rb < tmp/testcases.txt > tmp/result.txt')
+      if status == false
+        system('ruby tmp/ruby.rb >& tmp/result.txt')
+      end
       @result = File.read('tmp/result.txt')
       @a=1
     elsif params[:lang]=="c"
@@ -22,8 +26,12 @@ class HomeController < ApplicationController
       file = File.open('tmp/testcases.txt','w')
       file.syswrite(params[:testcases])
       file.close
-      system('gcc tmp/one.c -o tmp/one.out')
+      byebug
+      status = system('gcc tmp/one.c -o tmp/one.out')
       system('./tmp/one.out < tmp/testcases.txt > tmp/result.txt')
+      if status == false
+        system('gcc tmp/one.c >& tmp/result.txt')
+      end
       @result = File.read('tmp/result.txt')
       @a = 1
     end
@@ -61,10 +69,12 @@ class HomeController < ApplicationController
   def del 
     if params[:lang]=="ruby"
       File.delete('tmp/ruby.rb')
+      File.delete('tmp/result.txt')
     elsif params[:lang]=="c"
       File.delete('tmp/one.c')
+      File.delete('tmp/result.txt')
     end
-    File.delete('tmp/result.txt')
+    
   end
 
 end
