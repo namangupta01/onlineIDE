@@ -50,4 +50,7 @@ Rails.application.configure do
     authentication: :plain,
     enable_starttls_auto: true
   }
+  
+  # letter_opener configuration
+  config.action_mailer.delivery_method = :letter_opener
 end
