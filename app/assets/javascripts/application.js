@@ -25,7 +25,7 @@ $(document).ready(function(){
 		$('form').attr('action', '/run_ruby');*/
 		$('form').submit(function(){
 				$('<input />').attr('type', 'hidden')
-			          .attr('name', "lang")
+			          .attr('name', "language")
 			          .attr('value', 'ruby')
 			          .appendTo('form');
 				}
@@ -42,7 +42,7 @@ $(document).ready(function(){
 		/*$('form').attr('action', '/run_c');*/
 		$('form').submit(function(){
 				$('<input />').attr('type', 'hidden')
-			          .attr('name', "lang")
+			          .attr('name', "language")
 			          .attr('value', 'c')
 			          .appendTo('form');
 				}
