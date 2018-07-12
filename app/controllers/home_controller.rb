@@ -3,8 +3,8 @@ class HomeController < ApplicationController
   after_filter :del
 
   def index
-    byebug
     @a=0
+
       if params[:language]=="ruby"
         file = File.open('tmp/code.rb', 'w')
         file.syswrite(params[:code])
@@ -13,6 +13,7 @@ class HomeController < ApplicationController
         file.syswrite(params[:input])
         file.close
         status = system('ruby tmp/code.rb < tmp/input.txt > tmp/result.txt')
+        byebug
         if status == false
           system('ruby tmp/code.rb >& tmp/result.txt')
         end
@@ -60,6 +61,10 @@ class HomeController < ApplicationController
     @result = File.read('tmp/result.txt')
     @a=1
     render 'index'
+  end
+
+  def run
+    byebug
   end
 
 

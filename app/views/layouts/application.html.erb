@@ -6,18 +6,34 @@
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
   <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-<!-- jQuery library -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-<!-- Latest compiled JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>onlineIDE | Online Code Editor, Compiler &amp; Interpreter</title>
+    <meta name="author" content="namangupta01" />
+    <meta property="og:url" content="http://onlineIDE.com/" />
+    <meta property="og:site_name" content=" onlineIDE " />
+    <meta property="og:title" content=" onlineIDE | Online Code Editor, Compiler & Interpreter" />
+    <meta property="og:type" content="website" />
+    <meta property="og:description" content="onlieIDE is an online code editor, compiler and interpreter based on Ruby on Rails" />
+    <meta name="description" content="onlineIDE is an online code editor, compiler and interpreter based on Ruby on Rails">
+    <meta name="keywords" content="onlineide, ideone, online editor, online code editor, online code compiler, online python compiler, online code interpreter, online ide, naman gupta, onlineIDE">
+    <!-- Stylesheets -->
+    <link rel="stylesheet" type="text/css" href="onlineIDE/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="onlineIDE/css/custom.css" />
 
 </head>
 <body>
 <div class="contanier">	
-	<%= render 'shared/navigation' %>
+	<!--<%= render 'shared/navigation' %>-->
 	<% if notice %>
 	  <p class="alert alert-success"><%= notice %></p>
 	<% end %>

@@ -1,55 +1,182 @@
-<div class="row">
-	<div class="container">
-		<div class="dropdown">
-		  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Choose Language
-		  <span class="caret"></span></button>
-		  <ul class="dropdown-menu">
-		    <li><a id="ruby" href="#">Ruby</a></li>
-		    <li><a id="c" href="#">C</a></li>
-		  </ul>
-		</div><br>
-			<%= form_tag url_for(controller: :home,action: :index), method: :get,id: "form"%>
-				<div id="editor"></div>
-				<script src="src/theme-twilight.js" type="text/javascript" charset="utf-8"></script>
-				<script src="src/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
-				<script>
-	    			var editor = ace.edit("editor");
-	    			editor.setTheme("ace/theme/twilight");
-	    			/*var JavaScriptMode = ace.require("ace/mode/javascript").Mode;
-					editor.session.setMode(new JavaScriptMode());*/
-					/*editor.setTheme("ace/theme/tomorrow");*/
-	    			/*editor.session.setMode("ace/mode/c");*/
-	    			editor.session.setOptions({
-	    				mode: "ace/mode/ruby",
-	    				tabSize: 4,
-	    				useSoftTabs: true
-					});
-	      			editor.setAutoScrollEditorIntoView(true);
-	      			editor.setOption("minLines", 25);
-	    			editor.setOption("maxLines", 100);
-				</script>
-				<br>	
-			<%= text_area_tag(:testcases) %>
-			<%= submit_tag("Run") %>
-
-			<script type="text/javascript">
-			$('form').submit(function(){
-				$('<input />').attr('type', 'hidden')
-			          .attr('name', "code")
-			          .attr('value', editor.getSession().getValue())
-			          .appendTo('form');
-				}
-			)
-			</script>
-
-			<div>	
-				<% if @a==1 %>
-					<% File.readlines('tmp/result.txt').each do |line| %>
-					<%= line %><br>
-					<% end %>
-				<% end %>
-			</div>
-		</div>
+<textarea id='copy_link' readonly></textarea>
+<nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/"> onlineIDE </a>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="/"> New Code </a></li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="left col-md-8">
+            <div id="editor-topbar">
+                <div class="lang-choose">
+                    <select class="form-control" name="lang" id="lang">
+                        <option value="C">C (gcc 4.8.1)</option>
+                        <option value="CPP" selected>C++ (g++ 4.8.1)</option>
+                        <option value="CSHARP">C#</option>
+                        <option value="CLOJURE">Clojure (clojure 1.1.0)</option>
+                        <option value="CSS">CSS</option>
+                        <option value="HASKELL">Haskell (ghc 7.4.1)</option>
+                        <option value="JAVA">Java (openjdk 1.7.0_09)</option>
+                        <option value="JAVASCRIPT">JavaScript</option>
+                        <option value="OBJECTIVEC">Objective-C (clang 3.3)</option>
+                        <option value="PERL">Perl (perl 5.14.2)</option>
+                        <option value="PHP">PHP (php 5.3.10)</option>
+                        <option value="PYTHON">Python (python 2.7.3)</option>
+                        <option value="R">R (RScript 2.14.1)</option>
+                        <option value="RUBY">Ruby (ruby 2.1.1)</option>
+                        <option value="RUST">Rust (rustc 1.4.0)</option>
+                        <option value="SCALA">Scala (scalac 2.9.1)</option>
+                    </select>
+                </div>
+                <!-- END of lang-choose -->
+                <div id="settings">
+                    <a class="cursor no-select" id="download-code">
+                        <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
+                    </a>
+                    <a class="cursor no-select" id="show-settings">
+                        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                    </a>
+                    <div id="settings-pane">
+                        <div id="inner-settings-pane"></div>
+                        <label>Editor Theme</label>
+                        <select class="form-control" name="editor-theme" id="editor-theme">
+                            <option value="LIGHT">Light</option>
+                            <option value="DARK" selected>Dark</option>
+                        </select>
+                        <label>Indent Spaces</label>
+                        <input class="form-control" name="indent-spaces" id="indent-spaces" type="text" value="4">
+                    </div>
+                </div>
+                <!-- END of settings-pane -->
+            </div>
+            <!-- END of editor-topbar -->
+            <pre id="editor"></pre>
+            <div id="editor-statusbar"></div>
+        </div>
+        <div class="right col-md-4">
+        </div>
+    </div>
+    <!-- END of row -->
+    <div class="row">
+        <div class="col-md-12 right" id="show-results">
+            <div class="pull-left custom-input-panel">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" id="custom-input-checkbox"> Use custom input to test the code
+                    </label>
+                </div>
+            </div>
+            <div class="pull-right run-save-panel">
+                <span id='copy_code'></span>
+               <!--  <button class="btn btn-info" id="compile-code" data-toggle="tooltip" data-placement="top" title="Press Shift+Enter">Compile it!</button> -->
+                <button class="btn btn-success" id="run-code" data-toggle="tooltip" data-placement="top" title="Press Ctrl+Enter">Run!</button>
+            </div>
+        </div>
+    </div>
+    <!-- END of row -->
+    <div class="row">
+        <div class="col-md-12 right">
+            <!-- custom input textarea -->
+            <div class="custom-input-container">
+                <textarea id="custom-input" class="nice-textarea" placeholder="Custom input"></textarea>
+            </div>
+        </div>
+    </div>
+    <!-- END of row -->
+    <div class="row">
+        <div class="col-md-12 right">
+            <div class="output-response-box">
+                <div class="output-details">
+                    <div class="output-details-info run-status">
+                        <div class="key">Run Status:</div>
+                        <div class="value"></div>
+                    </div>
+                    <div class="output-details-info compile-status">
+                        <div class="key">Compile Status:</div>
+                        <div class="value"></div>
+                    </div>
+                    <div class="output-details-info time-sec">
+                        <div class="key">Time (sec):</div>
+                        <div class="value"></div>
+                    </div>
+                    <div class="output-details-info memory-kb">
+                        <div class="key">Memory (KB):</div>
+                        <div class="value"></div>
+                    </div>
+                </div>
+                <div class="output-io">
+                    <div class="output-error-box">
+                        <div class="error-key"></div>
+                        <pre class="error-message"></pre>
+                    </div>
+                    <div class="output-io-info output-i-info">
+                        <div class="key">Input (stdin)</div>
+                        <pre class="output-text output-i"> </pre>
+                        <span class="output-empty-message output-i-message"><i>Standard input is empty</i></span>
+                    </div>
+                    <div class="output-io-info output-o-info">
+                        <div class="key">Output (stdout)</div>
+                        <pre class="output-text output-o"> </pre>
+                        <span class="output-empty-message output-o-message"><i>Standard output is empty</i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
-
+<!-- END of container -->
+<footer class="container">
+    <span class="pull-left"> Powered by <a href="" target="_blank">Powered by onlineIDE Engine</a> </span>
+</footer>
+<a href="https://github.com/namangupta01/onlineIDE" title="Fork me on GitHub" class="github-corner" target="_blank">
+    <svg width="50" height="50" viewBox="0 0 250 250">
+        <title>Fork me on GitHub</title>
+        <path d="M0 0h250v250"></path>
+        <path d="M127.4 110c-14.6-9.2-9.4-19.5-9.4-19.5 3-7 1.5-11 1.5-11-1-6.2 3-2 3-2 4 4.7 2 11 2 11-2.2 10.4 5 14.8 9 16.2" fill="currentColor" style="transform-origin:130px 110px" class="octo-arm"></path>
+        <path d="M113.2 114.3s3.6 1.6 4.7.6l15-13.7c3-2.4 6-3 8.2-2.7-8-11.2-14-25 3-41 4.7-4.4 10.6-6.4 16.2-6.4.6-1.6 3.6-7.3 11.8-10.7 0 0 4.5 2.7 6.8 16.5 4.3 2.7 8.3 6 12 9.8 3.3 3.5 6.7 8 8.6 12.3 14 3 16.8 8 16.8 8-3.4 8-9.4 11-11.4 11 0 5.8-2.3 11-7.5 15.5-16.4 16-30 9-40 .2 0 3-1 7-5.2 11l-13.3 11c-1 1 .5 5.3.8 5z" fill="currentColor" class="octo-body"></path>
+    </svg>
+    <style>
+    .github-corner svg {
+        position: absolute;
+        right: 0;
+        top: 0;
+        mix-blend-mode: darken;
+        color: #ffffff;
+        fill: #000000;
+    }
+    
+    .github-corner:hover .octo-arm {
+        animation: octocat-wave .56s;
+    }
+    
+    @keyframes octocat-wave {
+        0%,
+        100% {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-20deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+    </style>
+</a>
+<!-- jQuery -->
+<script src="onlineIDE/js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+<!-- Bootstrap (include all individual files below) -->
+<script src="onlineIDE/js/custom.js" type="text/javascript" charset="utf-8"></script>
+<script src="onlineIDE/js/FileSaver.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="onlineIDE/js/jszip.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="onlineIDE/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="onlineIDE/ace-builds/src/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="onlineIDE/ace-builds/src/ext-statusbar.js" type="text/javascript" charset="utf-8"></script>
+<script src="onlineIDE/ace-builds/src/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
