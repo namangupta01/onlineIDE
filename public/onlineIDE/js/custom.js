@@ -391,6 +391,7 @@ $(document).ready(function(){
 				dataType: "json",
 				timeout: 10000,
 				success: function(response){
+					console.log(response);
 					request_ongoing = false;
 
 					if(location.port == "")
@@ -415,9 +416,12 @@ $(document).ready(function(){
 					$(".run-status").show();
 					$(".time-sec").show();
 					$(".memory-kb").show();
-
 					if(response.compile_status == "OK"){
-						if(response.run_status.status == "AC"){
+						console.log(-1);
+						console.log(response.run_status.status);
+						if(response.run_status.status === "AC"){
+						console.log("0");
+
 							$(".output-io").show();
 							$(".output-error-box").hide();
 							$(".output-io-info").show();
@@ -429,6 +433,8 @@ $(document).ready(function(){
 							$(".output-i").html(input_given);
 						}
 						else{
+						console.log("1");
+
 							$(".output-io").show();
 							$(".output-io-info").hide();
 							$(".output-error-box").show();
@@ -441,6 +447,7 @@ $(document).ready(function(){
 						}
 					}
 					else{
+						console.log("2");
 						$(".output-io").show();
 						$(".output-io-info").hide();
 						$(".compile-status").children(".value").html("--");
@@ -449,15 +456,16 @@ $(document).ready(function(){
 						$(".memory-kb").children(".value").html("0");
 						$(".error-key").html("Compile error");
 						$(".error-message").html(response.compile_status);
+						$(".output-o").html(response.logs);
+						$(".output-i").html(input_given);
 					}
 				},
 				error: function(error){
-
+					console.log("error");
 					request_ongoing = false;
 
 					// Change button text when this method is called
 					$("#run-code").html("Hack(run) it!");
-
 					// enable button when this method is called
 					$("#compile-code").prop('disabled', false);
 					$("#run-code").prop('disabled', false);
@@ -497,6 +505,7 @@ $(document).ready(function(){
 				dataType: "json",
 				timeout: timeout_ms,
 				success: function(response){
+					console.log(response);
 					if(location.port == "")
 						$('#copy_code')[0].innerHTML = '<kbd>' + window.location.hostname + '/code_id=' + response.code_id + '/</kbd>';
 					else
@@ -530,8 +539,8 @@ $(document).ready(function(){
 							$(".output-i-info").hide();
 							$(".compile-status").children(".value").html(response.compile_status);
 							$(".run-status").children(".value").html(response.run_status.status);
-							$(".time-sec").children(".value").html(response.run_status.time_used);
-							$(".memory-kb").children(".value").html(response.run_status.memory_used);
+							// $(".time-sec").children(".value").html(response.run_status.time_used);
+							// $(".memory-kb").children(".value").html(response.run_status.memory_used);
 							$(".output-o").html(response.run_status.output_html);
 						}
 						else{
@@ -540,8 +549,8 @@ $(document).ready(function(){
 							$(".output-error-box").show();
 							$(".compile-status").children(".value").html(response.compile_status);
 							$(".run-status").children(".value").html(response.run_status.status);
-							$(".time-sec").children(".value").html(response.run_status.time_used);
-							$(".memory-kb").children(".value").html(response.run_status.memory_used);
+							// $(".time-sec").children(".value").html(response.run_status.time_used);
+							// $(".memory-kb").children(".value").html(response.run_status.memory_used);
 
 							if (response.run_status.status == "TLE"){
 								// Timeout error
@@ -567,7 +576,7 @@ $(document).ready(function(){
 						$(".time-sec").children(".value").html("0.0");
 						$(".memory-kb").children(".value").html("0");
 						$(".error-key").html("Compile error");
-						$(".error-message").html(response.compile_status);
+						$(".error-message").html(response.logs);
 					}
 				},
 				error: function(error){
