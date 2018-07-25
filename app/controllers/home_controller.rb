@@ -60,6 +60,37 @@
     end
   end
 
+  def evaluate_java(lang, source, input)
+    file = File.open('tmp/TestDriver.java', 'w')
+    file.syswrite(source)
+    file.close
+    file = File.open('tmp/input.txt','w')
+    file.syswrite(input)
+    file.close
+    compile_status = system('javac tmp/TestDriver.java 2> log.txt')
+    system('java -cp ./tmp TestDriver < tmp/input.txt > tmp/result.txt')
+    if compile_status == false
+      logs = File.open('./log.txt', 'r')
+      return render json: {
+      :compile_status => "NOTOK",
+      :logs => logs.read
+    }
+    else
+      result = File.open("tmp/result.txt", 'r')
+      result_c = result.read
+      return render json: {
+        :compile_status => "OK",
+        :run_status => {
+        :status => "AC",
+        :output_html => result_c
+        }
+      }
+    end
+  end
+
+
+
+
   def evaluate_python(lang, source, input)
     file = File.open('tmp/code.py', 'w')
     file.syswrite(source)
@@ -70,7 +101,7 @@
     system('tmp/code.py 2> log.txt')
     compile_status = system('python tmp/code.py < tmp/input.txt > tmp/result.txt 2>log.txt')
     if compile_status == false
-      logs = File.open('./log.txt', 'r')
+      logs = File.open('log.txt', 'r')
       return render json: {
       :compile_status => "NOTOK",
       :logs => logs.read
@@ -102,7 +133,7 @@
     system('./a.out <tmp/input.txt >tmp/result.txt')
  
     if compile_status == false
-      logs = File.open('./log.txt', 'r')
+      logs = File.open('log.txt', 'r')
       return render json: {
       :compile_status => "NOTOK",
       :logs => logs.read
@@ -164,7 +195,7 @@
     system('./a.out <tmp/input.txt >tmp/result.txt')
  
     if compile_status == false
-      logs = File.open('./log.txt', 'r')
+      logs = File.open('log.txt', 'r')
       return render json: {
       :compile_status => "NOTOK",
       :logs => logs.read
