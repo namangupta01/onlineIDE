@@ -448,16 +448,21 @@ $(document).ready(function(){
 					}
 					else{
 						console.log("2");
+						console.log(response.logs)
 						$(".output-io").show();
 						$(".output-io-info").hide();
+						$(".output-error-box").show();
 						$(".compile-status").children(".value").html("--");
 						$(".run-status").children(".value").html("Compilation Error");
-						$(".time-sec").children(".value").html("0.0");
-						$(".memory-kb").children(".value").html("0");
+						// $(".time-sec").children(".value").html("0.0");
+						// $(".memory-kb").children(".value").html("0");
 						$(".error-key").html("Compile error");
-						$(".error-message").html(response.compile_status);
+						// $(".error-message").html(response.compile_status);
+						$(".error-message").html(response.logs);
 						$(".output-o").html(response.logs);
 						$(".output-i").html(input_given);
+						$(".error-message").html(response.logs);
+
 					}
 				},
 				error: function(error){
@@ -571,10 +576,11 @@ $(document).ready(function(){
 					else{
 						$(".output-io").show();
 						$(".output-io-info").hide();
+						$(".output-error-box").show();
 						$(".compile-status").children(".value").html("--");
 						$(".run-status").children(".value").html("Compilation Error");
-						$(".time-sec").children(".value").html("0.0");
-						$(".memory-kb").children(".value").html("0");
+						// $(".time-sec").children(".value").html("0.0");
+						// $(".memory-kb").children(".value").html("0");
 						$(".error-key").html("Compile error");
 						$(".error-message").html(response.logs);
 					}
