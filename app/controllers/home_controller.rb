@@ -1,10 +1,10 @@
-class HomeController < ApplicationController
-
+    class HomeController < ApplicationController
+ 
   after_filter :del
-
+ 
   def index
     @a=0
-
+ 
       if params[:language]=="ruby"
         file = File.open('tmp/code.rb', 'w')
         file.syswrite(params[:code])
@@ -38,33 +38,21 @@ class HomeController < ApplicationController
       end
     render 'index'
   end
-
-  
-
-  def run_ruby
-    file = File.open('tmp/code.rb', 'w')
-    file.syswrite(params[:code])
-    file.close
-    system('ruby tmp/code.rb > tmp/result.txt')
-    @result = File.read('tmp/result.txt')
-    @a=1
-    render 'index'
-  end
-
+ 
   def run
     lang = params[:lang]
     source_code = params[:source]
     input = params[:input]
     evaluate(lang, source_code, input)
   end
-
+ 
   def evaluate(lang, source, input)
     if lang == "CPP"
       evaluate_cpp(lang, source, input)
     elsif lang == "RUBY"
       evaluate_ruby(lang, source, input)
     elsif lang == "PYTHON"
-      evaluate_ruby(lang, source, input)
+      evaluate_python(lang, source, input)
     elsif lang == "JAVA"
       evaluate_java(lang, source, input)
     elsif lang == "C"
@@ -72,6 +60,128 @@ class HomeController < ApplicationController
     end
   end
 
+  def evaluate_java(lang, source, input)
+    file = File.open('tmp/TestDriver.java', 'w')
+    file.syswrite(source)
+    file.close
+    file = File.open('tmp/input.txt','w')
+    file.syswrite(input)
+    file.close
+    compile_status = system('javac tmp/TestDriver.java 2> log.txt')
+    system('java -cp ./tmp TestDriver < tmp/input.txt > tmp/result.txt')
+    if compile_status == false
+      logs = File.open('./log.txt', 'r')
+      return render json: {
+      :compile_status => "NOTOK",
+      :logs => logs.read
+    }
+    else
+      result = File.open("tmp/result.txt", 'r')
+      result_c = result.read
+      return render json: {
+        :compile_status => "OK",
+        :run_status => {
+        :status => "AC",
+        :output_html => result_c
+        }
+      }
+    end
+  end
+
+
+
+
+  def evaluate_python(lang, source, input)
+    file = File.open('tmp/code.py', 'w')
+    file.syswrite(source)
+    file.close
+    file = File.open('tmp/input.txt','w')
+    file.syswrite(input)
+    file.close
+    system('tmp/code.py 2> log.txt')
+    compile_status = system('python tmp/code.py < tmp/input.txt > tmp/result.txt 2>log.txt')
+    if compile_status == false
+      logs = File.open('log.txt', 'r')
+      return render json: {
+      :compile_status => "NOTOK",
+      :logs => logs.read
+    }
+    else
+      result = File.open("tmp/result.txt", 'r')
+      result_c = result.read
+      return render json: {
+        :compile_status => "OK",
+        :run_status => {
+        :status => "AC",
+        :output_html => result_c
+        }
+      }
+    end
+  end
+
+
+  def evaluate_cpp(lang, source, input)
+    file = File.open('tmp/code.cpp', 'w')
+    file.syswrite(source)
+    file.close
+    file = File.open('tmp/input.txt','w')
+    file.syswrite(input)
+    file.close
+    file = File.open('tmp/result.txt','w')
+    file.close
+    compile_status = system('g++ tmp/code.cpp 2> log.txt')
+    system('./a.out <tmp/input.txt >tmp/result.txt')
+ 
+    if compile_status == false
+      logs = File.open('log.txt', 'r')
+      return render json: {
+      :compile_status => "NOTOK",
+      :logs => logs.read
+    }
+    else
+      result = File.open("tmp/result.txt", 'r')
+      result_c = result.read
+      return render json: {
+        :compile_status => "OK",
+        :run_status => {
+        :status => "AC",
+        :output_html => result_c
+        }
+      }
+    end
+  end
+
+
+ 
+  def evaluate_ruby(lang, source, input)
+    file = File.open('tmp/code.rb', 'w')
+    file.syswrite(source)
+    file.close
+    file = File.open('tmp/input.txt','w')
+    file.syswrite(input)
+    file.close
+    system('ruby tmp/code.rb 2> log.txt')
+    compile_status = system('ruby tmp/code.rb <tmp/input.txt > tmp/result.txt')
+    result = File.open('tmp/result.txt', 'r')
+    result_c = result.read
+ 
+    if compile_status == false
+      logs = File.open('log.txt', 'r')
+      return render json: {
+      :compile_status => "NOTOK",
+      :logs => logs.read
+    }
+    else
+      return render json: {
+          :compile_status => "OK",
+          :run_status => {
+          :status => "AC",
+          :output_html => result_c
+        }
+      }
+    end
+  end
+ 
   def evaluate_c(lang, source, input)
     file = File.open('tmp/code.c', 'w')
     file.syswrite(source)
@@ -79,62 +189,32 @@ class HomeController < ApplicationController
     file = File.open('tmp/input.txt','w')
     file.syswrite(input)
     file.close
-    compile_status = system('gcc tmp/code.c -o tmp/code.out >& tmp/result.txt')
-    file = File.open('tmp/result.txt','r')
+    file = File.open('tmp/result.txt','w')
+    file.close
+    compile_status = system('gcc tmp/code.c 2> log.txt')
+    system('./a.out <tmp/input.txt >tmp/result.txt')
+ 
     if compile_status == false
+      logs = File.open('log.txt', 'r')
       return render json: {
       :compile_status => "NOTOK",
-      :logs => file.read
+      :logs => logs.read
     }
     else
-      status = system('gtimeout 4 bash -c "./tmp/code.out < tmp/input.txt >& tmp/result.txt"; echo $? >& tmp/timeout_status.txt')
-      file = File.open("tmp/timeout_status.txt", 'r')
-      byebug
-      if file.read.to_i == 124
-        file.close()
-        return render json: {
-          :compile_status => "OK",
-          :run_status => {
-          :status => "TLE"
-          }
+      result = File.open("tmp/result.txt", 'r')
+      result_c = result.read
+      return render json: {
+        :compile_status => "OK",
+        :run_status => {
+        :status => "AC",
+        :output_html => result_c
         }
-      elsif file.read.to_i == 1
-        file.close()
-        error = File.open("tmp/result.txt", 'r');
-        error_c = error.read
-        error.close()
-        return render json: {
-          :compile_status => "OK",
-          :run_status => {
-          :status => "NOTOK",
-          :stderr => error_c
-          }
-        }
-      elsif file.read.to_i == 0
-        file.close();
-        result = File.open("tmp/result.txt", 'r')
-        result_c = result.read
-        return render json: {
-          :compile_status => "OK",
-          :run_status => {
-          :status => "AC",
-          :output_html => result_c
-          }
-        }
-      else
-        render json: {
-          :status => "OK",
-          :run_status => {
-            :status => "NOTOK",
-            :stderr => "Stack Error"
-          }
-        }
-      end
+      }
     end
   end
-
-
-
+ 
+ 
+ 
   def del 
     if params[:lang]=="ruby"
       File.delete('tmp/code.rb')
@@ -143,9 +223,9 @@ class HomeController < ApplicationController
       File.delete('tmp/code.c')
       File.delete('tmp/result.txt')
     end
-    
+ 
   end
-
+ 
   def save_submission status , result
     language_validation = UserSubmission.validates_language_params params[:language]
     user_submission = UserSubmission.new
@@ -158,5 +238,6 @@ class HomeController < ApplicationController
     user_submission.output = result
     user_submission.save
   end
-
+ 
 end
+ 
