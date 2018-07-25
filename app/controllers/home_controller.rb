@@ -88,9 +88,6 @@
     end
   end
 
-
-
-
   def evaluate_python(lang, source, input)
     file = File.open('tmp/code.py', 'w')
     file.syswrite(source)

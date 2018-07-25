@@ -67,12 +67,12 @@ $(document).ready(function(){
 	function showResultBox() {
 		$(".output-response-box").show();
 		$(".run-status").show();
-		$(".time-sec").show();
-		$(".memory-kb").show();
+		// $(".time-sec").show();
+		// $(".memory-kb").show();
 		var compile_status = document.getElementById('compile_status').value;
 		var run_status_status = document.getElementById('run_status_status').value;
-		var run_status_time = document.getElementById('run_status_time').value;
-		var run_status_memory = document.getElementById('run_status_memory').value;
+		// var run_status_time = document.getElementById('run_status_time').value;
+		// var run_status_memory = document.getElementById('run_status_memory').value;
 		var run_status_output = document.getElementById('run_status_output').value;
 		var run_status_stderr = document.getElementById('run_status_stderr').value;
 
@@ -83,8 +83,8 @@ $(document).ready(function(){
 				$(".output-io-info").show();
 				$(".compile-status").children(".value").html(compile_status);
 				$(".run-status").children(".value").html(run_status_status);
-				$(".time-sec").children(".value").html(run_status_time);
-				$(".memory-kb").children(".value").html(run_status_memory);
+				// $(".time-sec").children(".value").html(run_status_time);
+				// $(".memory-kb").children(".value").html(run_status_memory);
 				$(".output-o").html(run_status_output);
 			}
 			else {
@@ -93,8 +93,8 @@ $(document).ready(function(){
 				$(".output-error-box").show();
 				$(".compile-status").children(".value").html(compile_status);
 				$(".run-status").children(".value").html(run_status_status);
-				$(".time-sec").children(".value").html(run_status_time);
-				$(".memory-kb").children(".value").html(run_status_memory);
+				// $(".time-sec").children(".value").html(run_status_time);
+				// $(".memory-kb").children(".value").html(run_status_memory);
 				$(".error-key").html("Run-time error (stderr)");
 				$(".error-message").html(run_status_stderr);
 			}
@@ -104,8 +104,8 @@ $(document).ready(function(){
 			$(".output-io-info").hide();
 			$(".compile-status").children(".value").html("--");
 			$(".run-status").children(".value").html("Compilation Error");
-			$(".time-sec").children(".value").html("0.0");
-			$(".memory-kb").children(".value").html("0");
+			// $(".time-sec").children(".value").html("0.0");
+			// $(".memory-kb").children(".value").html("0");
 			$(".error-key").html("Compile error");
 			$(".error-message").html(compile_status);
 		}
@@ -414,8 +414,8 @@ $(document).ready(function(){
 
 					$(".output-response-box").show();
 					$(".run-status").show();
-					$(".time-sec").show();
-					$(".memory-kb").show();
+					// $(".time-sec").show();
+					// $(".memory-kb").show();
 					if(response.compile_status == "OK"){
 						console.log(-1);
 						console.log(response.run_status.status);
@@ -427,8 +427,8 @@ $(document).ready(function(){
 							$(".output-io-info").show();
 							$(".compile-status").children(".value").html(response.compile_status);
 							$(".run-status").children(".value").html(response.run_status.status);
-							$(".time-sec").children(".value").html(response.run_status.time_used);
-							$(".memory-kb").children(".value").html(response.run_status.memory_used);
+							// $(".time-sec").children(".value").html(response.run_status.time_used);
+							// $(".memory-kb").children(".value").html(response.run_status.memory_used);
 							$(".output-o").html(response.run_status.output_html);
 							$(".output-i").html(input_given);
 						}
@@ -440,8 +440,8 @@ $(document).ready(function(){
 							$(".output-error-box").show();
 							$(".compile-status").children(".value").html(response.compile_status);
 							$(".run-status").children(".value").html(response.run_status.status);
-							$(".time-sec").children(".value").html(response.run_status.time_used);
-							$(".memory-kb").children(".value").html(response.run_status.memory_used);
+							// $(".time-sec").children(".value").html(response.run_status.time_used);
+							// $(".memory-kb").children(".value").html(response.run_status.memory_used);
 							$(".error-key").html("Run-time error (stderr)");
 							$(".error-message").html(response.run_status.stderr);
 						}
@@ -481,15 +481,15 @@ $(document).ready(function(){
 
 					$(".output-response-box").show();
 					$(".run-status").show();
-					$(".time-sec").show();
-					$(".memory-kb").show();
+					// $(".time-sec").show();
+					// $(".memory-kb").show();
 
 					$(".output-io").show();
 					$(".output-io-info").hide();
 					$(".compile-status").children(".value").html("--");
 					$(".run-status").children(".value").html("--");
-					$(".time-sec").children(".value").html("0.0");
-					$(".memory-kb").children(".value").html("0");
+					// $(".time-sec").children(".value").html("0.0");
+					// $(".memory-kb").children(".value").html("0");
 					$(".error-key").html("Server error");
 					$(".error-message").html("Server couldn't complete request. Please try again!");
 				}
@@ -533,8 +533,8 @@ $(document).ready(function(){
 
 					$(".output-response-box").show();
 					$(".run-status").show();
-					$(".time-sec").show();
-					$(".memory-kb").show();
+					// $(".time-sec").show();
+					// $(".memory-kb").show();
 
 					if(response.compile_status == "OK"){
 						if(response.run_status.status == "AC"){
@@ -602,15 +602,15 @@ $(document).ready(function(){
 
 					$(".output-response-box").show();
 					$(".run-status").show();
-					$(".time-sec").show();
-					$(".memory-kb").show();
+					// $(".time-sec").show();
+					// $(".memory-kb").show();
 
 					$(".output-io").show();
 					$(".output-io-info").hide();
 					$(".compile-status").children(".value").html("--");
 					$(".run-status").children(".value").html("--");
-					$(".time-sec").children(".value").html("0.0");
-					$(".memory-kb").children(".value").html("0");
+					// $(".time-sec").children(".value").html("0.0");
+					// $(".memory-kb").children(".value").html("0");
 					$(".error-key").html("Server error");
 					$(".error-message").html("Server couldn't complete request. Please try again!");
 				}
