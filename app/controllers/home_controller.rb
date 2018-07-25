@@ -1,4 +1,4 @@
-class HomeController < ApplicationController
+    class HomeController < ApplicationController
  
   after_filter :del
  
@@ -39,18 +39,6 @@ class HomeController < ApplicationController
     render 'index'
   end
  
- 
- 
-  def run_ruby
-    file = File.open('tmp/code.rb', 'w')
-    file.syswrite(params[:code])
-    file.close
-    system('ruby tmp/code.rb > tmp/result.txt')
-    @result = File.read('tmp/result.txt')
-    @a=1
-    render 'index'
-  end
- 
   def run
     lang = params[:lang]
     source_code = params[:source]
@@ -64,13 +52,75 @@ class HomeController < ApplicationController
     elsif lang == "RUBY"
       evaluate_ruby(lang, source, input)
     elsif lang == "PYTHON"
-      evaluate_ruby(lang, source, input)
+      evaluate_python(lang, source, input)
     elsif lang == "JAVA"
       evaluate_java(lang, source, input)
     elsif lang == "C"
       evaluate_c(lang, source, input)
     end
   end
+
+  def evaluate_python(lang, source, input)
+    file = File.open('tmp/code.py', 'w')
+    file.syswrite(source)
+    file.close
+    file = File.open('tmp/input.txt','w')
+    file.syswrite(input)
+    file.close
+    system('tmp/code.py 2> log.txt')
+    compile_status = system('python tmp/code.py < tmp/input.txt > tmp/result.txt 2>log.txt')
+    if compile_status == false
+      logs = File.open('./log.txt', 'r')
+      return render json: {
+      :compile_status => "NOTOK",
+      :logs => logs.read
+    }
+    else
+      result = File.open("tmp/result.txt", 'r')
+      result_c = result.read
+      return render json: {
+        :compile_status => "OK",
+        :run_status => {
+        :status => "AC",
+        :output_html => result_c
+        }
+      }
+    end
+  end
+
+
+  def evaluate_cpp(lang, source, input)
+    file = File.open('tmp/code.cpp', 'w')
+    file.syswrite(source)
+    file.close
+    file = File.open('tmp/input.txt','w')
+    file.syswrite(input)
+    file.close
+    file = File.open('tmp/result.txt','w')
+    file.close
+    compile_status = system('g++ tmp/code.cpp 2> log.txt')
+    system('./a.out <tmp/input.txt >tmp/result.txt')
+ 
+    if compile_status == false
+      logs = File.open('./log.txt', 'r')
+      return render json: {
+      :compile_status => "NOTOK",
+      :logs => logs.read
+    }
+    else
+      result = File.open("tmp/result.txt", 'r')
+      result_c = result.read
+      return render json: {
+        :compile_status => "OK",
+        :run_status => {
+        :status => "AC",
+        :output_html => result_c
+        }
+      }
+    end
+  end
+
+
  
   def evaluate_ruby(lang, source, input)
     file = File.open('tmp/code.rb', 'w')
@@ -114,7 +164,7 @@ class HomeController < ApplicationController
     system('./a.out <tmp/input.txt >tmp/result.txt')
  
     if compile_status == false
-      logs = File.open('log.txt', 'r')
+      logs = File.open('./log.txt', 'r')
       return render json: {
       :compile_status => "NOTOK",
       :logs => logs.read
