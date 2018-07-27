@@ -394,12 +394,12 @@ $(document).ready(function(){
 					console.log(response);
 					request_ongoing = false;
 
-					if(location.port == "")
-						$('#copy_code')[0].innerHTML = '<kbd>' + window.location.hostname + '/code_id=' + response.code_id + '/</kbd>';
-					else
-						$('#copy_code')[0].innerHTML = '<kbd>' + window.location.hostname + ':' +  location.port +'/code_id=' + response.code_id + '/</kbd>';
+					// if(location.port == "")
+					// 	$('#copy_code')[0].innerHTML = '<kbd>' + window.location.hostname + '/code_id=' + response.code_id + '/</kbd>';
+					// else
+					// 	$('#copy_code')[0].innerHTML = '<kbd>' + window.location.hostname + ':' +  location.port +'/code_id=' + response.code_id + '/</kbd>';
 
-					$('#copy_code').css({'display': 'initial'});
+					// $('#copy_code').css({'display': 'initial'});
 
 					// Change button text when this method is called
 					$("#run-code").html("Hack(run) it!");
@@ -511,17 +511,17 @@ $(document).ready(function(){
 				timeout: timeout_ms,
 				success: function(response){
 					console.log(response);
-					if(location.port == "")
-						$('#copy_code')[0].innerHTML = '<kbd>' + window.location.hostname + '/code_id=' + response.code_id + '/</kbd>';
-					else
-						$('#copy_code')[0].innerHTML = '<kbd>' + window.location.hostname + ':' +  location.port +'/code_id=' + response.code_id + '/</kbd>';
+					// if(location.port == "")
+					// 	$('#copy_code')[0].innerHTML = '<kbd>' + window.location.hostname + '/code_id=' + response.code_id + '/</kbd>';
+					// else
+					// 	$('#copy_code')[0].innerHTML = '<kbd>' + window.location.hostname + ':' +  location.port +'/code_id=' + response.code_id + '/</kbd>';
 
-					$('#copy_code').css({'display': 'initial'});
+					// $('#copy_code').css({'display': 'initial'});
 
 					request_ongoing = false;
 
 					// Change button text when this method is called
-					$("#run-code").html("Hack(run) it!");
+					$("#run-code").html("Run it!");
 
 					// enable button when this method is called
 					$("#compile-code").prop('disabled', false);
