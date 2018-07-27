@@ -22,3 +22,34 @@
 */
 
 
+
+.navbar .navbar-default {
+    margin-bottom: 0 !important;
+}
+#recent-activity{
+	margin-left: 10px;
+	margin-right: 10px;
+	min-width: 190px;
+	word-wrap: break-word;
+}
+
+.sidebar1{
+    background-color:#eef;
+    position: absolute;
+    width: 200px;
+    right: 170px;
+    border: 5px;
+    border-radius: 5%;
+    top: 150px;
+    padding: 20px;
+}
+
+.submission{
+  font-size: 14px;
+   color: #000
+}
+
+.user-info {
+  padding: 15px;
+  color: #fff;
+}

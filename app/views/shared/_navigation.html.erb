@@ -1,12 +1,21 @@
-<nav>
-<p class="navbar-text pull-right">
-<% if user_signed_in? %>
-  Logged in as <strong><%= current_user.email %></strong>.
-  <%= link_to 'Edit profile', edit_user_registration_path, :class => 'navbar-link' %> |
-  <%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
-<% else %>
-  <%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link'  %> |
-  <%= link_to "Login", new_user_session_path, :class => 'navbar-link'  %>
-<% end %>
-</p>
+<nav class="navbar navbar-default navbar-inverse">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/"> <b style="color:#fff">onlineIDE</b> </a>
+        </div>
+        <ul class="nav navbar-nav navbar-left">
+            <li><a href="/"> <b>New Code</b> </a></li>
+        </ul>
+
+    <div class="nav navbar-nav navbar-right user-info">
+    <% if user_signed_in? %>
+      Logged in as <strong style="color:#000:"><%= current_user.email %></strong>.
+      <%= link_to ' Edit profile ', edit_user_registration_path, :class => 'navbar-link' %> |
+      <%= link_to " Logout ", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
+    <% else %>
+      <%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link'  %> |
+      <%= link_to "Login", new_user_session_path, :class => 'navbar-link'  %>
+    <% end %>
+  </div>
+  </div>
 </nav>
